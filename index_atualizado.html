@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribal Wars Scripts - Mass Scavenging</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background: linear-gradient(135deg, #f4e4bc 0%, #e8d5a3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7d510f 0%, #5a3a0f 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .success-banner {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .script-section {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #7d510f;
+        }
+
+        .script-title {
+            color: #7d510f;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features {
+            background: rgba(125, 81, 15, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .features h3 {
+            color: #7d510f;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+        }
+
+        .code-section {
+            margin: 25px 0;
+        }
+
+        .code-label {
+            font-weight: bold;
+            color: #7d510f;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .copy-btn.premium {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .copy-btn.premium:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .files-section {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .files-title {
+            color: #1976d2;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 20px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-link:hover {
+            background-color: rgba(25, 118, 210, 0.1);
+        }
+
+        .warnings {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid #ffc107;
+        }
+
+        .warnings h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .warning-list {
+            list-style: none;
+        }
+
+        .warning-list li {
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #856404;
+        }
+
+        .warning-list li::before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+
+        .troubleshooting {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .troubleshooting h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .troubleshooting-item {
+            margin: 12px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #6c757d;
+        }
+
+        .troubleshooting-item strong {
+            color: #495057;
+        }
+
+        .status-footer {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .author-credit {
+            margin-top: 15px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .code-block {
+                font-size: 0.8em;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚔️ Tribal Wars Scripts</h1>
+            <div class="subtitle">Scripts Oficiais para Coleta em Massa</div>
+        </div>
+
+        <div class="success-banner">
+            🎉 Script Original Hospedado com Sucesso! Agora usando massScavenge.js oficial
+        </div>
+
+        <div class="content">
+            <div class="script-section">
+                <h2 class="script-title">
+                    🏹 Mass Scavenging Script (Original)
+                </h2>
+                <p>Script oficial <strong>massScavenge.js</strong> criado por Sophie "Shinko to Kuma" - o mesmo usado no site oficial shinko-to-kuma.com</p>
+
+                <div class="features">
+                    <h3>📋 Funcionalidades Avançadas:</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">✅ Interface completa e arrastável</div>
+                        <div class="feature-item">✅ Suporte a todas as 4 categorias de coleta</div>
+                        <div class="feature-item">✅ Configuração de tropas por prioridade</div>
+                        <div class="feature-item">✅ Sistema de backup de tropas</div>
+                        <div class="feature-item">✅ Configuração de tempo por data/hora</div>
+                        <div class="feature-item">✅ Modo balanceado vs prioridade</div>
+                        <div class="feature-item">✅ Envio em grupos de até 50 aldeias</div>
+                        <div class="feature-item">✅ Suporte completo a Premium Account</div>
+                        <div class="feature-item">✅ Múltiplos idiomas (PT, EN, ES, etc)</div>
+                        <div class="feature-item">✅ Compatível com desktop e mobile</div>
+                        <div class="feature-item">✅ Salvamento automático de configurações</div>
+                        <div class="feature-item">✅ Sistema de reset de configurações</div>
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-label">🚀 Script Básico (Recomendado):</div>
+                    <div class="code-block">javascript:var premiumBtnEnabled=false;$.getScript('https://lcsromano.github.io/tribal-wars-scripts/massScavenge.js');</div>
+                    <button class="copy-btn" onclick="copyToClipboard('javascript:var premiumBtnEnabled=false;$.getScript(\'https://lcsromano.github.io/tribal-wars-scripts/massScavenge.js\');')">
+                        📋 Copiar Script Básico
+                    </button>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-label">💎 Script com Premium Account:</div>
+                    <div class="code-block">javascript:var premiumBtnEnabled=true;$.getScript('https://lcsromano.github.io/tribal-wars-scripts/massScavenge.js');</div>
+                    <button class="copy-btn premium" onclick="copyToClipboard('javascript:var premiumBtnEnabled=true;$.getScript(\'https://lcsromano.github.io/tribal-wars-scripts/massScavenge.js\');')">
+                        📋 Copiar Script Premium
+                    </button>
+                </div>
+            </div>
+
+            <div class="files-section">
+                <h3 class="files-title">📁 Arquivos Disponíveis:</h3>
+                <a href="massScavenge.js" class="file-link" target="_blank">
+                    📄 massScavenge.js - Script principal oficial
+                </a>
+                <a href="https://github.com/lcsromano/tribal-wars-scripts" class="file-link" target="_blank">
+                    🔗 Código fonte no GitHub
+                </a>
+            </div>
+
+            <div class="warnings">
+                <h3>⚠️ Avisos Importantes:</h3>
+                <ul class="warning-list">
+                    <li><strong>Use apenas em servidores onde scripts são permitidos</strong></li>
+                    <li><strong>Execute apenas na página de Coleta em Massa do jogo</strong></li>
+                    <li><strong>Verifique as regras do seu servidor antes de usar</strong></li>
+                    <li><strong>Script será redirecionado automaticamente para a página correta</strong></li>
+                    <li><strong>Configurações são salvas automaticamente no navegador</strong></li>
+                </ul>
+            </div>
+
+            <div class="troubleshooting">
+                <h3>🔧 Solução de Problemas:</h3>
+                <div class="troubleshooting-item">
+                    <strong>Script não carrega:</strong> Verifique se está logado no jogo e tente recarregar a página
+                </div>
+                <div class="troubleshooting-item">
+                    <strong>Erro de jQuery:</strong> Aguarde a página carregar completamente antes de executar
+                </div>
+                <div class="troubleshooting-item">
+                    <strong>Interface não aparece:</strong> O script redireciona automaticamente para a página de coleta em massa
+                </div>
+                <div class="troubleshooting-item">
+                    <strong>Configurações perdidas:</strong> Use o botão "Reset settings" na interface do script
+                </div>
+                <div class="troubleshooting-item">
+                    <strong>Premium não funciona:</strong> Certifique-se de ter Premium Account ativo e usar premiumBtnEnabled=true
+                </div>
+            </div>
+        </div>
+
+        <div class="status-footer">
+            <div class="status-grid">
+                <div class="status-item">
+                    <span>📊 Status:</span>
+                    <span style="color: #4CAF50;">✅ Online</span>
+                </div>
+                <div class="status-item">
+                    <span>🔄 Última atualização:</span>
+                    <span>13/07/2025</span>
+                </div>
+                <div class="status-item">
+                    <span>📈 Versão:</span>
+                    <span>Original (massScavenge.js)</span>
+                </div>
+                <div class="status-item">
+                    <span>🌐 Compatibilidade:</span>
+                    <span>Todos os servidores TW</span>
+                </div>
+            </div>
+            <div class="author-credit">
+                Script original criado por Sophie "Shinko to Kuma" | Hospedado por lcsromano
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Feedback visual
+                event.target.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                event.target.textContent = '✅ Copiado!';
+                
+                setTimeout(function() {
+                    if (event.target.classList.contains('premium')) {
+                        event.target.style.background = 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)';
+                        event.target.textContent = '📋 Copiar Script Premium';
+                    } else {
+                        event.target.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                        event.target.textContent = '📋 Copiar Script Básico';
+                    }
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Erro ao copiar: ', err);
+                alert('Erro ao copiar. Tente selecionar o texto manualmente.');
+            });
+        }
+
+        // Adicionar efeitos de hover suaves
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.copy-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
